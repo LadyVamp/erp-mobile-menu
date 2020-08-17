@@ -1,0 +1,52 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+
+
+@import "./fontawesome/fontawesome.scss";
+@import "./fontawesome/solid.scss";
+@import "./fontawesome/brands.scss";
+@import "./fontawesome/light.scss";
+@import "./fontawesome/regular.scss";
+@import "./fontawesome/duotone.scss";
+
+
+.display-fitcontents {
+   display: contents
+}
+
+::-webkit-scrollbar {
+   display: none;
+}
+
+$bg-blue-200: #ECF1F9;
+$border-blue-500: #409BEF;
+$text-blue-500: #409BEF;
+$border-gray-600: #c3cee0;
+$text-gray-600: #c3cee0;
+$border-gray-700: #4a5568;
+$text-gray-700: #4a5568;
+
+
+.bg-blue-200 {
+   background-color: $bg-blue-200;
+}
+.border-blue-500 {
+   border-color: $border-blue-500;
+}
+.text-blue-500 {
+   color: $text-blue-500;
+}
+.text-gray-600 {
+   color: $border-gray-600;
+}
+.border-gray-600 {
+   border-color: $border-gray-600;
+}
+.border-gray-700 {
+   border-color: $border-gray-700;
+}
+.text-gray-700 {
+   color: $text-gray-700;
+}

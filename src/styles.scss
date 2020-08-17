@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+::-webkit-scrollbar {
+   display: none;
+}
+
+.display-contents {
+   display: contents
+}
+
+button:focus {
+   @apply outline-none cursor-pointer
+}
+
+.gradient-back {
+   background: linear-gradient(0deg, rgba(255, 255, 255, 1) 46%, rgba(9, 9, 121, 0) 100%);
+}
+
+.center-vertically {
+   top: 50%;
+   transform: translateY(-50%);
+}
+
+// Удаляем стрелки у input type=number
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+   -moz-appearance: textfield;
+}

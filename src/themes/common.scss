@@ -50,3 +50,20 @@ $text-gray-700: #4a5568;
 .text-gray-700 {
    color: $text-gray-700;
 }
+
+
+.btn {
+   border-width: 1px;
+   width: 10rem;
+   height: 3rem;
+   border-color: $border-gray-600;
+   border-radius: 0.25rem;
+   &:hover {
+      border-color: $border-blue-500;
+      color: $text-blue-500;
+   }
+   
+   &:focus {
+      outline: none;
+   }
+}

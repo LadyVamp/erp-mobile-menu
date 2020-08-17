@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "rosstat-dap": {
+    "erp-mobile-menu": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -97,21 +97,21 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "rosstat-dap:build",
+            "browserTarget": "erp-mobile-menu:build",
             "customWebpackConfig": {
               "path": "./webpack.config.js"
             }
           },
           "configurations": {
             "production": {
-              "browserTarget": "rosstat-dap:build:production"
+              "browserTarget": "erp-mobile-menu:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "rosstat-dap:build"
+            "browserTarget": "erp-mobile-menu:build"
           }
         },
         "lint": {
@@ -124,5 +124,5 @@
       }
     }
   },
-  "defaultProject": "rosstat-dap"
+  "defaultProject": "erp-mobile-menu"
 }

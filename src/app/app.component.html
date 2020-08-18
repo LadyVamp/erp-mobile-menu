@@ -1,8 +1,8 @@
 <router-outlet></router-outlet>
 
 <div class="flex m-5 max-w-md flex-col">
-   <div class="flex justify-around">
-      <button class="flex items-center btn">
+   <div *ngIf="!newSectionBlock" class="flex justify-around">
+      <button class="flex items-center btn" (click)="openNewSectionBlock()">
          <div class="w-5 h-5 border border-gray-600 rounded-full m-2 p-1">
             <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
                <use xlink:href="/assets/images/icons.svg#add" />
@@ -19,7 +19,7 @@
          Позиция
       </button>
    </div>
-   <div class="flex items-center flex-col text-gray-700 justify-center mt-20 text-center">
+   <div *ngIf="!newSectionBlock" class="flex items-center flex-col text-gray-700 justify-center mt-20 text-center">
       <div class="w-32 h-32">
          <svg class="fill-current text-gray-600" viewBox="0 0 30 29">
             <use xlink:href="/assets/images/icons.svg#empty_menu" />
@@ -28,6 +28,34 @@
       Добавьте в новое
       меню разделы и позиции
    </div>
+   
+   <div *ngIf="newSectionBlock" class="flex flex-col my-5">
+      <div class="flex justify-between">
+         <h1 class="font-bold text-lg">Добавить раздел</h1>
+         <button class="text-center p-2 font-semibold text-blue-600 my-2 rounded-md focus:outline-none"
+            (click)="openNewSectionBlock()">
+            Отмена
+         </button>
+      </div>
+      <label for="">Название</label>
+      <div class="leading-normal">
+         <input type="text" class="px-4 py-3 w-full focus:outline-none" placeholder="Введите название категории" #newSection
+            (keyup.enter)="addSection(newSection.value)">
+      </div>
+      <button class="text-center p-2 bg-blue-600 text-white font-semibold w-full my-2 rounded-md"
+         (click)="addSection(newSection.value)">
+         Сохранить
+      </button>
+   </div>
 </div>
 
-<!-- <div>JSON data: {{ jsonData | json }}</div> -->
+<div class="flex justify-around">
+   <button class="btn" (click)="getDataFromStorage()">
+      getDataFromStorage
+   </button>
+   <button class="btn" (click)="clearStorage()">
+      clearStorage
+   </button>
+</div>
+
+<div *ngIf="storageService.getItem('section') == null">JSON data: {{ jsonData | json }}</div>

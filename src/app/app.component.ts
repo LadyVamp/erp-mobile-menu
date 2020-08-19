@@ -9,6 +9,9 @@ import { StorageService } from './services/storage.service';
 export class AppComponent {
   jsonData: any;
   newSectionBlock = false;
+  isExpandLevel1 = false;
+  isExpandLevel2 = false;
+  isExpandLevel3 = false;
 
   constructor(
     private menuService: MenuService,
@@ -50,6 +53,27 @@ export class AppComponent {
     this.openNewSectionBlock();
   }
 
+  expandMenu(level: number, title: string, items: string) {
+    console.log(
+      this.isExpandLevel1,
+      this.isExpandLevel2,
+      this.isExpandLevel3,
+      title,
+      items
+    );
+    switch (level) {
+      case 1:
+        this.isExpandLevel2 = !this.isExpandLevel2;
+        this.isExpandLevel3 = false;
+        break;
+      case 2:
+        this.isExpandLevel3 = !this.isExpandLevel3;
+        break;
+      default:
+        console.log(level);
+        break;
+    }
+  }
 
 
 }

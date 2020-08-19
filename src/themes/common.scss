@@ -32,21 +32,27 @@ $text-gray-700: #4a5568;
 .bg-blue-200 {
    background-color: $bg-blue-200;
 }
+
 .border-blue-500 {
    border-color: $border-blue-500;
 }
+
 .text-blue-500 {
    color: $text-blue-500;
 }
+
 .text-gray-600 {
    color: $border-gray-600;
 }
+
 .border-gray-600 {
    border-color: $border-gray-600;
 }
+
 .border-gray-700 {
    border-color: $border-gray-700;
 }
+
 .text-gray-700 {
    color: $text-gray-700;
 }
@@ -58,6 +64,7 @@ $text-gray-700: #4a5568;
    height: 3rem;
    border-color: $border-gray-600;
    border-radius: 0.25rem;
+   
    &:hover {
       border-color: $border-blue-500;
       color: $text-blue-500;
@@ -65,5 +72,22 @@ $text-gray-700: #4a5568;
    
    &:focus {
       outline: none;
+   }
+}
+
+.list-item {
+   // display: flex;
+   align-items: center;
+   height: 2.5rem;
+   background-color: white;
+   padding-left: 0.25rem;
+   padding-right: 0.25rem;
+   user-select: none;
+   margin-top: 0.25rem;
+   margin-bottom: 0.25rem;
+   border-radius: 0.375rem;
+
+   &:hover {
+      cursor: pointer;
    }
 }

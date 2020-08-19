@@ -59,4 +59,47 @@
    
    <div *ngIf="storageService.getItem('section') == null">JSON data: {{ jsonData | json }}</div>
    
+   <!-- <div class="mt-10">
+      <ul *ngFor="let collection of jsonData">
+         <li class="font-bold">{{ collection.name }}</li>
+         <ul *ngFor="let section of collection.sections">
+            <li class="px-2">{{ section.name }}</li>
+            <ul *ngFor="let product of section.items">
+               <li class="px-4">{{ product.name }} | {{ product.sale }}</li>
+            </ul>
+         </ul>
+      </ul>
+   </div> -->
+   
+   <div class="mt-10">
+      <ul *ngFor="let collection of jsonData">
+         <li class="flex items-center font-bold h-10 bg-white rounded-md px-1">
+            <div class="w-5 h-5">
+               <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+                  <use xlink:href="/assets/images/icons.svg#dots" />
+               </svg>
+            </div>{{ collection.name }}
+         </li>
+         <ul *ngFor="let section of collection.sections">
+            <li class="flex items-center ml-4 h-10 bg-white rounded-md my-1 font-semibold px-1">
+               <div class="w-5 h-5">
+                  <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+                     <use xlink:href="/assets/images/icons.svg#dots" />
+                  </svg>
+               </div>{{ section.name }}
+            </li>
+            <ul *ngFor="let product of section.items">
+               <li class="flex items-center justify-between h-10 ml-8 bg-white rounded-md my-1 px-1">
+                  <p>
+                     {{ product.name }}
+                  </p>
+                  <p>
+                     {{ product.sale }} &#8381;
+                  </p>
+               </li>
+            </ul>            
+         </ul>
+      </ul>
+   </div>
+   
 </div>

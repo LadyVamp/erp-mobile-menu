@@ -18,6 +18,9 @@ export class AppComponent {
     name: 'Холодные Напитки'
   }];
 
+  isEmptyStorage = false;
+  errorGetData = false;
+
   /*userObject = [{
     "items": [],
     "name": "Холодные Напитки",
@@ -57,22 +60,33 @@ export class AppComponent {
   constructor(
     private menuService: MenuService,
     public storageService: StorageService
-  ) { }
+  ) {
+    this.storageService.watchStorage().subscribe((data: string) => {
+      console.log(data);
+      if (data == 'remove') {
+        this.isEmptyStorage = true;
+      }
+      if (data == 'set') {
+        this.isEmptyStorage = false;
+      }
+    });
+
+    this.menuService.getData().subscribe(
+      data => {
+        console.info(data);
+        this.jsonData = data;
+      },
+      error => {
+        console.error(error);
+        this.errorGetData = true;
+      }
+    );
+  }
 
 
   ngOnInit() {
-    this.storageService.watchStorage().subscribe((data: string) => {
-      // this will call whenever your localStorage data changes
-      // use localStorage code here and set your data here for ngFor
-      console.log(data);
-    });
-
-    this.menuService.getData().subscribe((data: any): void => {
-      console.info(data);
-      this.jsonData = data;
-    });
+    this.getDataFromStorage();
   }
-
 
   clearStorage() {
     this.storageService.removeItem('userObject');
@@ -90,8 +104,9 @@ export class AppComponent {
 
   getDataFromStorage() {
     const userJson = localStorage.getItem('userObject');
-    this.userObject = userJson !== null ? JSON.parse(userJson) : '';
+    this.userObject = userJson !== null ? JSON.parse(userJson) : null;
     console.log(this.userObject);
+    return this.userObject;
   }
 
   addSection(newSection: string) {
@@ -99,8 +114,11 @@ export class AppComponent {
       this.userObject = [];
       this.storageService.setItem('userObject', JSON.stringify([]));
     }
-    this.userObject.push({ name: newSection });
-    this.fillStorage(this.userObject);
+    if (newSection) {
+      this.userObject.push({ name: newSection });
+      this.fillStorage(this.userObject);
+    }
+    this.openNewSectionBlock();
   }
 
   expandMenu(level: number, title: string, items: string) {

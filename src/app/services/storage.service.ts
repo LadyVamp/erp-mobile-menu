@@ -16,7 +16,7 @@ export class StorageService {
   setItem(key: string, data: any) {
     try {
       localStorage.setItem(key, data);
-      this.storageSub.next('changed');
+      this.storageSub.next('set');
       console.log(localStorage);
     } catch (e) {
       console.error('Error saving to localStorage', e);
@@ -26,7 +26,7 @@ export class StorageService {
   removeItem(key: string) {
     try {
       localStorage.removeItem(key);
-      this.storageSub.next('changed');
+      this.storageSub.next('remove');
       console.log(localStorage);
     }
     catch (e) {

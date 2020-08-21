@@ -9,53 +9,13 @@ import { StorageService } from './services/storage.service';
 export class AppComponent {
   jsonData: any;
   newSectionBlock = false;
-  isExpandLevel1 = false;
-  isExpandLevel2 = false;
-  isExpandLevel3 = false;
-
 
   userObject = [{
     name: 'Холодные Напитки'
   }];
 
   isEmptyStorage = false;
-  errorGetData = false;
-
-  /*userObject = [{
-    "items": [],
-    "name": "Холодные Напитки",
-    "sections": [
-      {
-        "items": [
-          {
-            "name": "Смузи манго-банан 250мл",
-            "sale": 90.00
-          },
-          {
-            "name": "Смузи манго-банан 450мл",
-            "sale": 170.00
-          }
-        ],
-        "name": "Смузи",
-        "sections": []
-      },
-      {
-        "items": [
-          {
-            "name": "Лимонад клубника-мята 250мл",
-            "sale": 50.00
-          },
-          {
-            "name": "Лимонад клубника-мята 450мл",
-            "sale": 100.00
-          }
-        ],
-        "name": "Лимонад",
-        "sections": []
-      }
-    ]
-  }]*/
-
+  isErrorGetData = false;
 
   constructor(
     private menuService: MenuService,
@@ -75,12 +35,20 @@ export class AppComponent {
       data => {
         console.info(data);
         this.jsonData = data;
+        this.jsonData.map((item: any) => {
+          item.expanded = false;
+          // item.id = Math.floor(Math.random() * 100);
+        });
+        for (let i = 0; i < this.jsonData.length; i++) {
+          this.jsonData[i].id = i;
+        }
       },
       error => {
         console.error(error);
-        this.errorGetData = true;
+        this.isErrorGetData = true;
       }
     );
+
   }
 
 
@@ -121,26 +89,8 @@ export class AppComponent {
     this.openNewSectionBlock();
   }
 
-  expandMenu(level: number, title: string, items: string) {
-    console.log(
-      this.isExpandLevel1,
-      this.isExpandLevel2,
-      this.isExpandLevel3,
-      title,
-      items
-    );
-    switch (level) {
-      case 1:
-        this.isExpandLevel2 = !this.isExpandLevel2;
-        this.isExpandLevel3 = false;
-        break;
-      case 2:
-        this.isExpandLevel3 = !this.isExpandLevel3;
-        break;
-      default:
-        console.log(level);
-        break;
-    }
+  expandMenu(value: object) {
+    console.log(value);
   }
 
 

@@ -20,7 +20,7 @@
       </button>
    </div>
    
-   <div *ngIf="errorGetData" class="flex items-center flex-col text-gray-700 justify-center mt-20 text-center">
+   <div *ngIf="isErrorGetData" class="flex items-center flex-col text-gray-700 justify-center mt-20 text-center">
       <div class="w-32 h-32">
          <svg class="fill-current text-gray-600" viewBox="0 0 30 29">
             <use xlink:href="/assets/images/icons.svg#empty_menu" />
@@ -54,9 +54,10 @@
       </ul>
    </div>
    
-   <div *ngIf="isEmptyStorage">
+   <div *ngIf="isEmptyStorage || userObject == null">
       <ul *ngFor="let collection of jsonData; let i = index;">
-         <li (click)="expandMenu(1, collection.name, jsonData[i])" class="list-item flex ml-2 font-semibold">
+         <li (click)="expandMenu(jsonData[i]); collection.expanded = !collection.expanded"
+            class="list-item flex ml-2 font-semibold">
             <div class="w-5 h-5">
                <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
                   <use xlink:href="/assets/images/icons.svg#dots" />
@@ -64,8 +65,8 @@
             </div>{{ collection.name }}
          </li>
          <ul *ngFor="let section of collection.sections; let i = index;">
-            <li [ngClass]="{block:isExpandLevel2, hidden:!isExpandLevel2}"
-               (click)="expandMenu(2, section.name, collection.sections[i])" class="list-item flex ml-4 font-semibold">
+            <li *ngIf="collection.expanded" (click)="expandMenu(collection.sections[i]); section.expanded = !section.expanded"
+               class="list-item flex ml-4 font-semibold">
                <div class="w-5 h-5">
                   <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
                      <use xlink:href="/assets/images/icons.svg#dots" />
@@ -73,7 +74,7 @@
                </div>{{ section.name }}
             </li>
             <ul *ngFor="let product of section.items">
-               <li [ngClass]="{block:isExpandLevel3, hidden:!isExpandLevel3}" class="list-item flex justify-between ml-8">
+               <li *ngIf="section.expanded && collection.expanded" class="list-item flex justify-between ml-8">
                   <p>
                      {{ product.name }}
                   </p>
@@ -85,6 +86,7 @@
          </ul>
       </ul>
    </div>
+   
    
    
    <div class="flex justify-around mt-10">

@@ -11,7 +11,8 @@ export class AppComponent {
   newSectionBlock = false;
 
   userObject = [{
-    name: 'Холодные Напитки'
+    name: 'Холодные Напитки',
+    id: 0
   }];
 
   isEmptyStorage = false;
@@ -37,7 +38,6 @@ export class AppComponent {
         this.jsonData = data;
         this.jsonData.map((item: any) => {
           item.expanded = false;
-          // item.id = Math.floor(Math.random() * 100);
         });
         for (let i = 0; i < this.jsonData.length; i++) {
           this.jsonData[i].id = i;
@@ -83,7 +83,7 @@ export class AppComponent {
       this.storageService.setItem('userObject', JSON.stringify([]));
     }
     if (newSection) {
-      this.userObject.push({ name: newSection });
+      this.userObject.push({ name: newSection, id: Math.floor(Math.random() * 100) });
       this.fillStorage(this.userObject);
     }
     this.openNewSectionBlock();

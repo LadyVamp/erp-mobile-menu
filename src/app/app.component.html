@@ -57,12 +57,24 @@
    <div *ngIf="isEmptyStorage || userObject == null">
       <ul *ngFor="let collection of jsonData; let i = index;">
          <li (click)="expandMenu(jsonData[i]); collection.expanded = !collection.expanded"
-            class="list-item flex ml-2 font-semibold">
+            [ngClass]="collection.expanded ? 'bg-blue-500 text-white' : 'bg-white'"
+            class="h-10 flex ml-2 font-semibold items-center bg-white px-1 my-1 select-none rounded cursor-pointer">
+            <div class="w-3 h-3" *ngIf="collection.expanded">
+               <svg class="fill-current text-white" viewBox="0 0 30 29">
+                  <use xlink:href="/assets/images/icons.svg#arrow_down" />
+               </svg>
+            </div>
+            <div class="w-5 h-5" *ngIf="!collection.expanded">
+               <svg class="fill-current text-red-700" viewBox="0 0 30 29">
+                  <use xlink:href="/assets/images/icons.svg#arrow_right" />
+               </svg>
+            </div>
             <div class="w-5 h-5">
                <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
                   <use xlink:href="/assets/images/icons.svg#dots" />
                </svg>
-            </div>{{ collection.name }}
+            </div>
+            {{ collection.name }}
          </li>
          <ul *ngFor="let section of collection.sections; let i = index;">
             <li *ngIf="collection.expanded" (click)="expandMenu(collection.sections[i]); section.expanded = !section.expanded"

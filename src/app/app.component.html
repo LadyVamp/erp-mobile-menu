@@ -48,13 +48,56 @@
       </button>
    </div>
    
+   <!-- localStorage -->
    <div *ngIf="!isEmptyStorage">
       <ul *ngFor="let collection of userObject; let i = index;">
-         <li class="list-item flex ml-2 font-semibold">{{ collection.name }}</li>
+         <li (click)="expandMenu(userObject[i]); collection.expanded = !collection.expanded"
+            class="list-item flex ml-2 font-semibold">
+            <div class="w-5 h-5 mr-2" (click)="openCrudButtonsBlock()">
+               <svg class="fill-current text-gray-700 rounded-full hover:bg-blue-500 hover:text-white" viewBox="0 0 30 29">
+                  <use xlink:href="/assets/images/icons.svg#dots" />
+               </svg>
+            </div>
+            {{ collection.name }}
+         </li>
       </ul>
    </div>
    
-   <div *ngIf="isEmptyStorage || userObject == null">
+   <div *ngIf="crudButtonsBlock" class="border bg-blue-100 p-1 rounded-md ml-5">
+      <button class="btn-crud" (click)="crud('addPosition')">
+         <div>
+            <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+               <use xlink:href="/assets/images/icons.svg#add" />
+            </svg>
+         </div>Добавить позицию
+      </button>
+      <button class="btn-crud" (click)="crud('addSection')">
+         <div>
+            <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+               <use xlink:href="/assets/images/icons.svg#add" />
+            </svg>
+         </div>Добавить раздел меню
+      </button>
+      <button class="btn-crud" (click)="crud('edit')">
+         <div>
+            <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+               <use xlink:href="/assets/images/icons.svg#edit" />
+            </svg>
+         </div>Редактировать
+      </button>
+      <button class="btn-crud" (click)="crud('delete', currentItemId)">
+         <div>
+            <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+               <use xlink:href="/assets/images/icons.svg#delete" />
+            </svg>
+         </div>Удалить
+      </button>
+   </div>
+   <!-- /localStorage -->
+   
+   
+   <!-- json -->
+   <div *ngIf="isEmptyStorage">
       <ul *ngFor="let collection of jsonData; let i = index;">
          <li (click)="expandMenu(jsonData[i]); collection.expanded = !collection.expanded"
             class="h-10 flex ml-2 font-semibold items-center bg-white px-1 my-1 select-none rounded cursor-pointer">
@@ -103,7 +146,7 @@
          </ul>
       </ul>
    </div>
-   
+   <!-- /json -->
    
    
    <div class="flex justify-around mt-10">

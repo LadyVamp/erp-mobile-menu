@@ -7,7 +7,7 @@ import { Subject, Observable } from 'rxjs';
 export class StorageService {
   constructor() { }
 
-  private storageSub = new Subject<string>();
+  public storageSub = new Subject<string>();
 
   watchStorage(): Observable<any> {
     return this.storageSub.asObservable();
@@ -17,7 +17,6 @@ export class StorageService {
     try {
       localStorage.setItem(key, data);
       this.storageSub.next('set');
-      console.log(localStorage);
     } catch (e) {
       console.error('Error saving to localStorage', e);
     }
@@ -27,7 +26,6 @@ export class StorageService {
     try {
       localStorage.removeItem(key);
       this.storageSub.next('remove');
-      console.log(localStorage);
     }
     catch (e) {
       console.error('Error removing from localStorage', e);
@@ -42,4 +40,11 @@ export class StorageService {
       return null;
     }
   }
+
+  isEmpty(key: string) {
+    if (localStorage.getItem(key) == '[]' || localStorage.getItem(key) == null) {
+      this.storageSub.next('empty');
+    }
+  }
+
 }

@@ -1,18 +1,23 @@
 import { Component } from '@angular/core';
 import { MenuService } from './services/menu.service';
 import { StorageService } from './services/storage.service';
+import { Section } from './interfaces';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
+
 export class AppComponent {
   jsonData: any;
   newSectionBlock = false;
+  crudButtonsBlock = false;
+  currentItemId = 0;
 
   userObject = [{
     name: 'Холодные Напитки',
-    id: 0
+    id: 0,
+    expanded: false
   }];
 
   isEmptyStorage = false;
@@ -24,7 +29,11 @@ export class AppComponent {
   ) {
     this.storageService.watchStorage().subscribe((data: string) => {
       console.log(data);
+
       if (data == 'remove') {
+        this.isEmptyStorage = true;
+      }
+      if (data == 'empty') {
         this.isEmptyStorage = true;
       }
       if (data == 'set') {
@@ -54,20 +63,20 @@ export class AppComponent {
 
   ngOnInit() {
     this.getDataFromStorage();
+    this.storageService.isEmpty('userObject')
   }
 
   clearStorage() {
     this.storageService.removeItem('userObject');
   }
 
-  openNewSectionBlock() {
-    this.newSectionBlock = !this.newSectionBlock;
+  openCrudButtonsBlock() {
+    this.crudButtonsBlock = !this.crudButtonsBlock;
   }
 
   fillStorage(value: object): void {
     console.log(value);
-    localStorage.setItem('userObject', JSON.stringify(value));
-    console.log(localStorage);
+    this.storageService.setItem('userObject', JSON.stringify(value))
   }
 
   getDataFromStorage() {
@@ -83,14 +92,42 @@ export class AppComponent {
       this.storageService.setItem('userObject', JSON.stringify([]));
     }
     if (newSection) {
-      this.userObject.push({ name: newSection, id: Math.floor(Math.random() * 100) });
+      this.userObject.push({ name: newSection, id: Math.floor(Math.random() * 100), expanded: false });
       this.fillStorage(this.userObject);
     }
     this.openNewSectionBlock();
   }
 
-  expandMenu(value: object) {
+
+  expandMenu(value: Section) {
     console.log(value);
+    this.currentItemId = value.id
+  }
+
+  openNewSectionBlock() {
+    this.newSectionBlock = !this.newSectionBlock;
+  }
+
+  crud(operation: string, id?: number) {
+    console.log(operation, this.currentItemId);
+    switch (operation) {
+      case 'addPosition':
+        //
+        break;
+      case 'addSection':
+        this.openNewSectionBlock();
+        break;
+      case 'edit':
+        //
+        break;
+      case 'delete':
+        let index = this.userObject.findIndex(x => x.id === id);
+        this.userObject.splice(index, 1);
+        this.fillStorage(this.userObject);
+        this.storageService.isEmpty('userObject')
+        break;
+    }
+    this.openCrudButtonsBlock();
   }
 
 

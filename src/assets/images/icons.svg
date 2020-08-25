@@ -3,13 +3,12 @@
       <path d="M12 4V20" stroke="#22242C" stroke-linecap="round" />
       <path d="M4 12L20 12" stroke="#22242C" stroke-linecap="round" />
    </symbol>
-   
-   <symbol viewBox="0 0 10 6" id="arrow_down">
-      <path fill-rule="evenodd" clip-rule="evenodd"
-         d="M0.734835 0.734835C0.881282 0.588388 1.11872 0.588388 1.26517 0.734835L5 4.46967L8.73483 0.734835C8.88128 0.588388 9.11872 0.588388 9.26517 0.734835C9.41161 0.881282 9.41161 1.11872 9.26517 1.26517L5.26517 5.26517C5.11872 5.41161 4.88128 5.41161 4.73483 5.26517L0.734835 1.26517C0.588388 1.11872 0.588388 0.881282 0.734835 0.734835Z" />
+
+   <symbol viewBox="0 0 24 24"  fill="none" id="arrow_down">
+      <path d="M16 11L12 15L8 11" stroke="#22242C" stroke-linecap="round" stroke-linejoin="round"/>
    </symbol>
 
-   <symbol viewBox="0 0 24 24" id="arrow_right" fill="none">
+   <symbol viewBox="0 0 25 20" fill="none" id="arrow_right">
       <path d="M11 8L15 12L11 16" stroke="#22242C" stroke-linecap="round" stroke-linejoin="round"/>
    </symbol>
    

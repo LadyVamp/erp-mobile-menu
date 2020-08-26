@@ -7,7 +7,7 @@ import { Subject, Observable } from 'rxjs';
 export class StorageService {
   constructor() { }
 
-  public storageSub = new Subject<string>();
+  private storageSub = new Subject<string>();
 
   watchStorage(): Observable<any> {
     return this.storageSub.asObservable();

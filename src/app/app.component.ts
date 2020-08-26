@@ -12,7 +12,10 @@ export class AppComponent {
   jsonData: any;
   newSectionBlock = false;
   crudButtonsBlock = false;
-  currentItemId = 0;
+  currentSectionId = 0;
+
+  editSectionBlock = false;
+  currentSectionName = '';
 
   userObject = [{
     name: 'Холодные Напитки',
@@ -63,7 +66,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.getDataFromStorage();
-    this.storageService.isEmpty('userObject')
+    this.storageService.isEmpty('userObject');
   }
 
   clearStorage() {
@@ -76,7 +79,7 @@ export class AppComponent {
 
   fillStorage(value: object): void {
     console.log(value);
-    this.storageService.setItem('userObject', JSON.stringify(value))
+    this.storageService.setItem('userObject', JSON.stringify(value));
   }
 
   getDataFromStorage() {
@@ -101,15 +104,19 @@ export class AppComponent {
 
   expandMenu(value: Section) {
     console.log(value);
-    this.currentItemId = value.id
+    this.currentSectionId = value.id;
+    this.currentSectionName = value.name;
   }
 
   openNewSectionBlock() {
     this.newSectionBlock = !this.newSectionBlock;
   }
+  openEditSectionBlock() {
+    this.editSectionBlock = !this.editSectionBlock;
+  }
 
   crud(operation: string, id?: number) {
-    console.log(operation, this.currentItemId);
+    console.log(operation, this.currentSectionId);
     switch (operation) {
       case 'addPosition':
         //
@@ -118,16 +125,23 @@ export class AppComponent {
         this.openNewSectionBlock();
         break;
       case 'edit':
-        //
+        this.openEditSectionBlock();
         break;
       case 'delete':
-        let index = this.userObject.findIndex(x => x.id === id);
+        const index = this.userObject.findIndex(x => x.id === id);
         this.userObject.splice(index, 1);
         this.fillStorage(this.userObject);
-        this.storageService.isEmpty('userObject')
+        this.storageService.isEmpty('userObject');
         break;
     }
     this.openCrudButtonsBlock();
+  }
+
+  editSection(id: number) {
+    const index = this.userObject.findIndex(x => x.id === id);
+    this.userObject[index].name = this.currentSectionName;
+    this.fillStorage(this.userObject);
+    this.openEditSectionBlock();
   }
 
 

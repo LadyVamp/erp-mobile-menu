@@ -85,7 +85,7 @@
             </svg>
          </div>Редактировать
       </button>
-      <button class="btn-crud" (click)="crud('delete', currentItemId)">
+      <button class="btn-crud" (click)="crud('delete', currentSectionId)">
          <div>
             <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
                <use xlink:href="/assets/images/icons.svg#delete" />
@@ -93,6 +93,25 @@
          </div>Удалить
       </button>
    </div>
+   
+   <div *ngIf="editSectionBlock" class="flex flex-col h-40 border bg-white p-1">
+      <div class="flex justify-between">
+         <h1 class="font-bold text-lg">Редактировать раздел</h1>
+         <button class="text-center font-semibold text-blue-600 rounded-md focus:outline-none" (click)="openEditSectionBlock()">
+            Отмена
+         </button>
+      </div>
+      <label for="">Название</label>
+      <div class="leading-normal border rounded-md">
+         <input [(ngModel)]="currentSectionName" type="text" class="px-4 py-3 w-full focus:outline-none"
+            placeholder="Введите название категории">
+      </div>
+      <button class="text-center p-2 bg-blue-600 text-white font-semibold w-full my-2 rounded-md"
+         (click)="editSection(currentSectionId)">
+         Сохранить
+      </button>
+   </div>
+   
    <!-- /localStorage -->
    
    

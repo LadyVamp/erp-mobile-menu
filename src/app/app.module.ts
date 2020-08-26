@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppService } from './app.service';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -17,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    FormsModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent, HeaderComponent],

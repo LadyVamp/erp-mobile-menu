@@ -1,5 +1,5 @@
 export interface Section {
-    name: string,
-    id: number,
-    expanded: boolean
+    name: string;
+    id: number;
+    expanded: boolean;
 }

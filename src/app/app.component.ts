@@ -10,11 +10,13 @@ import { Section } from './interfaces';
 
 export class AppComponent {
   jsonData: any;
+
   newSectionBlock = false;
   crudButtonsBlock = false;
-  currentSectionId = 0;
-
   editSectionBlock = false;
+  confirmDeleteBlock = false;
+
+  currentSectionId = 0;
   currentSectionName = '';
 
   userObject = [{
@@ -114,6 +116,9 @@ export class AppComponent {
   openEditSectionBlock() {
     this.editSectionBlock = !this.editSectionBlock;
   }
+  openConfirmDeleteBlock() {
+    this.confirmDeleteBlock = !this.confirmDeleteBlock;
+  }
 
   crud(operation: string, id?: number) {
     console.log(operation, this.currentSectionId);
@@ -128,10 +133,7 @@ export class AppComponent {
         this.openEditSectionBlock();
         break;
       case 'delete':
-        const index = this.userObject.findIndex(x => x.id === id);
-        this.userObject.splice(index, 1);
-        this.fillStorage(this.userObject);
-        this.storageService.isEmpty('userObject');
+        this.openConfirmDeleteBlock();
         break;
     }
     this.openCrudButtonsBlock();
@@ -142,6 +144,14 @@ export class AppComponent {
     this.userObject[index].name = this.currentSectionName;
     this.fillStorage(this.userObject);
     this.openEditSectionBlock();
+  }
+
+  deleteSection(id: number) {
+    const index = this.userObject.findIndex(x => x.id === id);
+    this.userObject.splice(index, 1);
+    this.fillStorage(this.userObject);
+    this.storageService.isEmpty('userObject');
+    this.openConfirmDeleteBlock();
   }
 
 

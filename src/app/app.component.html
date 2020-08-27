@@ -39,11 +39,18 @@
       </div>
       <label>Название</label>
       <div class="leading-normal border rounded-md">
-         <input type="text" class="px-4 py-3 w-full focus:outline-none" placeholder="Введите название категории" #newSection
-            (keyup.enter)="addSection(newSection.value)">
+         <input type="text" class="px-4 py-3 w-full focus:outline-none" placeholder="Введите название категории" #newSection>
       </div>
-      <button class="text-center p-2 bg-blue-600 text-white font-semibold w-full my-2 rounded-md"
-         (click)="addSection(newSection.value)">
+      <label>Раздел</label>
+      <select (change)="onChange($event)"
+         class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+         <option value="0">Основной - первый уровень</option>
+         <option *ngFor="let level of userObject" [value]="level.id">
+            {{level.name}}
+         </option>
+      </select>
+      <button class="text-center p-2 bg-blue-600 text-white font-semibold w-full my-2 rounded-md mt-auto"
+         (click)="addSection(newSection.value, selectedLevelId)">
          Сохранить
       </button>
    </section>
@@ -106,7 +113,7 @@
          <input [(ngModel)]="currentSectionName" type="text" class="px-4 py-3 w-full focus:outline-none"
             (keyup.enter)="editSection(currentSectionId)" placeholder="Введите название категории">
       </div>
-      <button class="text-center p-2 bg-blue-600 text-white font-semibold w-full my-2 rounded-md"
+      <button class="text-center p-2 bg-blue-600 text-white font-semibold w-full my-2 rounded-md mt-auto"
          (click)="editSection(currentSectionId)">
          Сохранить
       </button>

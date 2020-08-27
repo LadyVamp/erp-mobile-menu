@@ -21,12 +21,27 @@ export class AppComponent {
 
   userObject = [{
     name: 'Холодные Напитки',
-    id: 0,
-    expanded: false
-  }];
+    id: 1,
+    expanded: false,
+    sections: [
+      {
+        id: 0,
+        parentId: 1,
+        name: 'Морс',
+        items: [
+          {
+            name: 'Морс клюквенный 250мл',
+            sale: 100
+          },
+        ],
+      }
+    ]
+  }]
 
   isEmptyStorage = false;
   isErrorGetData = false;
+
+  selectedLevelId = 0;
 
   constructor(
     private menuService: MenuService,
@@ -91,19 +106,6 @@ export class AppComponent {
     return this.userObject;
   }
 
-  addSection(newSection: string) {
-    if (localStorage.length == 0) {
-      this.userObject = [];
-      this.storageService.setItem('userObject', JSON.stringify([]));
-    }
-    if (newSection) {
-      this.userObject.push({ name: newSection, id: Math.floor(Math.random() * 100), expanded: false });
-      this.fillStorage(this.userObject);
-    }
-    this.openNewSectionBlock();
-  }
-
-
   expandMenu(value: Section) {
     console.log(value);
     this.currentSectionId = value.id;
@@ -139,6 +141,43 @@ export class AppComponent {
     this.openCrudButtonsBlock();
   }
 
+  /* addSection(newSection: string) {
+     if (localStorage.length == 0) {
+       this.userObject = [];
+       this.storageService.setItem('userObject', JSON.stringify([]));
+     }
+     if (newSection) {
+       this.userObject.push({ name: newSection, id: Math.floor(Math.random() * 100), expanded: false });
+       this.fillStorage(this.userObject);
+     }
+     this.openNewSectionBlock();
+   } */
+
+  addSection(newSection: string, parentId: any) {
+    console.log(newSection, parentId);
+    if (localStorage.length == 0) {
+      this.userObject = [];
+      this.storageService.setItem('userObject', JSON.stringify([]));
+    }
+    if (newSection) { // заполнено название
+      if (parentId == 0) { // по умолчанию первый уровень
+        console.log('parentId', parentId);
+        this.userObject.push({ name: newSection, id: Math.floor(Math.random() * 100), expanded: false, sections: [] });
+      } else if (parentId !== 0) { // выбран родительский раздел
+        console.log('parentId !== 0', parentId);
+        console.log(this.userObject);
+        console.log(this.currentSectionId);
+        const index = this.userObject.findIndex(x => x.id === this.currentSectionId);
+        console.log(index);
+        // this.userObject[index].sections = [{ id: Math.floor(Math.random() * 100), parentId: this.currentSectionId, name: newSection, items: [{ name: 'Морс клюквенный', sale: 100 },], }];
+        this.userObject[index].sections = [{ id: Math.floor(Math.random() * 100), parentId: this.currentSectionId, name: newSection, items: [], }];
+        // todo sections перезаписывается, а надо добавить в конец!
+      }
+      this.fillStorage(this.userObject);
+    }
+
+  }
+
   editSection(id: number) {
     const index = this.userObject.findIndex(x => x.id === id);
     this.userObject[index].name = this.currentSectionName;
@@ -154,5 +193,9 @@ export class AppComponent {
     this.openConfirmDeleteBlock();
   }
 
+  onChange(event: any) {
+    this.selectedLevelId = event.target.value
+    // console.log(this.selectedLevelId);
+  }
 
 }

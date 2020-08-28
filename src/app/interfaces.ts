@@ -1,8 +1,3 @@
-// export interface Section {
-//     name: string;
-//     id: number;
-//     expanded: boolean;
-// }
 export interface Section {
     name: string;
     id: number;
@@ -13,7 +8,8 @@ export interface InnerSection {
     id: number;
     parentId: number;
     name: string;
-    items: Array<Position>;    
+    expanded: boolean;
+    items: Array<Position>;
 }
 export interface Position {
     name: string;

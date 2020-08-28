@@ -39,7 +39,8 @@
       </div>
       <label>Название</label>
       <div class="leading-normal border rounded-md">
-         <input type="text" class="px-4 py-3 w-full focus:outline-none" placeholder="Введите название категории" #newSection>
+         <input (keyup.enter)="addSection(newSection.value, selectedParentId)" type="text"
+            class="px-4 py-3 w-full focus:outline-none" placeholder="Введите название категории" #newSection>
       </div>
       <label>Раздел</label>
       <select (change)="onChange($event)"
@@ -50,7 +51,7 @@
          </option>
       </select>
       <button class="text-center p-2 bg-blue-600 text-white font-semibold w-full my-2 rounded-md mt-auto"
-         (click)="addSection(newSection.value, selectedLevelId)">
+         (click)="addSection(newSection.value, selectedParentId)">
          Сохранить
       </button>
    </section>
@@ -59,7 +60,15 @@
    <div *ngIf="!isEmptyStorage">
       <ul *ngFor="let collection of userObject; let i = index;">
          <li (click)="expandMenu(userObject[i]); collection.expanded = !collection.expanded"
-            class="list-item flex ml-2 font-semibold">
+            class="h-10 flex ml-2 font-semibold items-center bg-white px-1 my-1 select-none rounded cursor-pointer">
+            <div class="w-5 h-5">
+               <svg *ngIf="collection.expanded" viewBox="0 0 30 29">
+                  <use xlink:href="/assets/images/icons.svg#arrow_down" />
+               </svg>
+               <svg *ngIf="!collection.expanded" viewBox="0 0 30 29">
+                  <use xlink:href="/assets/images/icons.svg#arrow_right" />
+               </svg>
+            </div>
             <div class="w-5 h-5 mr-2" (click)="openCrudButtonsBlock()">
                <svg class="fill-current text-gray-700 rounded-full hover:bg-blue-500 hover:text-white" viewBox="0 0 30 29">
                   <use xlink:href="/assets/images/icons.svg#dots" />
@@ -67,8 +76,38 @@
             </div>
             {{ collection.name }}
          </li>
+         <ul *ngFor="let section of collection.sections; let i = index;">
+            <li *ngIf="collection.expanded" (click)="expandMenu(collection.sections[i]); section.expanded = !section.expanded"
+               class="list-item flex ml-4 font-semibold">
+               <div class="w-5 h-5">
+                  <svg *ngIf="section.expanded" viewBox="0 0 30 29">
+                     <use xlink:href="/assets/images/icons.svg#arrow_down" />
+                  </svg>
+                  <svg *ngIf="!section.expanded" viewBox="0 0 30 29">
+                     <use xlink:href="/assets/images/icons.svg#arrow_right" />
+                  </svg>
+               </div>
+               <div class="w-5 h-5">
+                  <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+                     <use xlink:href="/assets/images/icons.svg#dots" />
+                  </svg>
+               </div>
+               {{ section.name }}
+            </li>
+            <ul *ngFor="let product of section.items">
+               <li *ngIf="section.expanded && collection.expanded" class="list-item flex justify-between ml-8">
+                  <p>
+                     {{ product.name }}
+                  </p>
+                  <p>
+                     {{ product.sale }} &#8381;
+                  </p>
+               </li>
+            </ul>
+         </ul>
       </ul>
    </div>
+   
    
    <div *ngIf="crudButtonsBlock" class="border bg-blue-100 p-1 rounded-md ml-5">
       <button class="btn-crud" (click)="crud('addPosition')">
@@ -92,7 +131,7 @@
             </svg>
          </div>Редактировать
       </button>
-      <button class="btn-crud" (click)="crud('delete', currentSectionId)">
+      <button class="btn-crud" (click)="crud('delete')">
          <div>
             <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
                <use xlink:href="/assets/images/icons.svg#delete" />

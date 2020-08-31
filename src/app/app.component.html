@@ -76,6 +76,39 @@
             </div>
             {{ collection.name }}
          </li>
+         
+         <div *ngIf="crudButtonsBlock && collection.id == this.currentSectionId"
+            class="absolute border bg-blue-100 p-1 rounded-md ml-8 w-10/12 px-3">
+            <button class="btn-crud" (click)="crud('addPosition')">
+               <div>
+                  <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+                     <use xlink:href="/assets/images/icons.svg#add" />
+                  </svg>
+               </div>Добавить позицию
+            </button>
+            <button class="btn-crud" (click)="crud('addSection')">
+               <div>
+                  <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+                     <use xlink:href="/assets/images/icons.svg#add" />
+                  </svg>
+               </div>Добавить раздел меню
+            </button>
+            <button class="btn-crud" (click)="crud('edit')">
+               <div>
+                  <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+                     <use xlink:href="/assets/images/icons.svg#edit" />
+                  </svg>
+               </div>Редактировать
+            </button>
+            <button class="btn-crud" (click)="crud('delete')">
+               <div>
+                  <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+                     <use xlink:href="/assets/images/icons.svg#delete" />
+                  </svg>
+               </div>Удалить
+            </button>
+         </div>
+         
          <ul *ngFor="let section of collection.sections; let i = index;">
             <li *ngIf="collection.expanded" (click)="expandMenu(collection.sections[i]); section.expanded = !section.expanded"
                class="list-item flex ml-4 font-semibold">
@@ -88,7 +121,7 @@
                   </svg>
                </div>
                <div class="w-5 h-5">
-                  <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
+                  <svg class="hidden fill-current text-gray-700" viewBox="0 0 30 29">
                      <use xlink:href="/assets/images/icons.svg#dots" />
                   </svg>
                </div>
@@ -106,38 +139,6 @@
             </ul>
          </ul>
       </ul>
-   </div>
-   
-   
-   <div *ngIf="crudButtonsBlock" class="border bg-blue-100 p-1 rounded-md ml-5">
-      <button class="btn-crud" (click)="crud('addPosition')">
-         <div>
-            <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
-               <use xlink:href="/assets/images/icons.svg#add" />
-            </svg>
-         </div>Добавить позицию
-      </button>
-      <button class="btn-crud" (click)="crud('addSection')">
-         <div>
-            <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
-               <use xlink:href="/assets/images/icons.svg#add" />
-            </svg>
-         </div>Добавить раздел меню
-      </button>
-      <button class="btn-crud" (click)="crud('edit')">
-         <div>
-            <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
-               <use xlink:href="/assets/images/icons.svg#edit" />
-            </svg>
-         </div>Редактировать
-      </button>
-      <button class="btn-crud" (click)="crud('delete')">
-         <div>
-            <svg class="fill-current text-gray-700" viewBox="0 0 30 29">
-               <use xlink:href="/assets/images/icons.svg#delete" />
-            </svg>
-         </div>Удалить
-      </button>
    </div>
    
    <section *ngIf="editSectionBlock" class="section-crud">

@@ -49,7 +49,8 @@ export class AppComponent {
     public storageService: StorageService
   ) {
     this.storageService.watchStorage().subscribe((data: string) => {
-      // console.log(data);
+      console.log(data);
+      this.crudButtonsBlock = false;
 
       if (data == 'remove') {
         this.isEmptyStorage = true;

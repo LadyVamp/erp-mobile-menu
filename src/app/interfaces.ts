@@ -2,9 +2,9 @@ export interface Section {
     name: string;
     id: number;
     expanded: boolean;
-    sections?: Array<InnerSection>
+    sections?: Array<SubSection>
 }
-export interface InnerSection {
+export interface SubSection {
     id: number;
     parentId: number;
     name: string;
@@ -12,6 +12,7 @@ export interface InnerSection {
     items: Array<Position>;
 }
 export interface Position {
+    id: number;
     name: string;
     sale: number
 }

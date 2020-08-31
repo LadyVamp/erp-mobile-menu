@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuService } from './services/menu.service';
 import { StorageService } from './services/storage.service';
-import { Section } from './interfaces';
+import { Section, Position,SubSection } from './interfaces';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,18 +19,27 @@ export class AppComponent {
   currentSectionId = 0;
   currentSectionName = '';
 
+  currentPositionId = 0;
+  currentPositionName = '';
+  currentPositionSale = 0;
+  crudButtonsPositionBlock = false;
+  editPositionBlock = false;
+  currentSectionParentId = 0;
+
   userObject = [{
     name: 'Холодные Напитки',
     id: 1,
     expanded: false,
     sections: [
       {
-        id: 0,
+        id: 2,
         parentId: 1,
         name: 'Морс',
         expanded: false,
         items: [
           {
+            id: 1,
+            sectionId: 2,
             name: 'Морс клюквенный 250мл',
             sale: 100
           },
@@ -51,6 +60,7 @@ export class AppComponent {
     this.storageService.watchStorage().subscribe((data: string) => {
       console.log(data);
       this.crudButtonsBlock = false;
+      this.crudButtonsPositionBlock = false;
 
       if (data == 'remove') {
         this.isEmptyStorage = true;
@@ -113,6 +123,12 @@ export class AppComponent {
     this.currentSectionId = value.id;
     this.currentSectionName = value.name;
   }
+  expandMenuSubSection(value: SubSection) {
+    console.log('expandMenuSubSection', value);
+    this.currentSectionId = value.id;
+    this.currentSectionName = value.name;
+    this.currentSectionParentId = value.parentId;
+  }
 
   openNewSectionBlock() {
     this.newSectionBlock = !this.newSectionBlock;
@@ -140,6 +156,12 @@ export class AppComponent {
       case 'delete':
         this.openConfirmDeleteBlock();
         break;
+      case 'editPosition':
+        this.openEditPositionBlock();
+        break;
+      case 'deletePosition':
+        //
+        break;
     }
     this.openCrudButtonsBlock();
   }
@@ -157,7 +179,12 @@ export class AppComponent {
         this.userObject.push({ name: newSection, id: Math.floor(Math.random() * 100), expanded: false, sections: [] });
       } else if (parent !== 0) { // выбран родительский раздел    
         const index = this.userObject.findIndex(x => x.id === Number(parent));
-        this.userObject[index].sections.push({ id: Math.floor(Math.random() * 100), parentId: parent, name: newSection, expanded: false, items: [{ name: 'Морс клюквенный', sale: 100 },] })
+        const sectionId = Math.floor(Math.random() * 100)
+        const testPositions = [
+          { id: Math.floor(Math.random() * 100), sectionId: sectionId, name: 'Морс клюквенный', sale: 100 },
+          { id: Math.floor(Math.random() * 100), sectionId: sectionId, name: 'Морс облепиховый', sale: 200 },
+        ]
+        this.userObject[index].sections.push({ id: sectionId, parentId: Number(parent), name: newSection, expanded: false, items: testPositions })
       }
       this.fillStorage(this.userObject);
       this.openNewSectionBlock();
@@ -182,6 +209,43 @@ export class AppComponent {
   onChange(event: any) {
     this.selectedParentId = event.target.value
     console.log(this.selectedParentId);
+  }
+
+  getPositionInfo(value: Position) {
+    console.log(value);
+    this.currentPositionId = value.id
+    this.currentPositionName = value.name
+    this.currentPositionSale = value.sale
+
+    console.log(this.currentPositionId)
+  }
+
+  openCrudButtonsPositionBlock() {
+    this.crudButtonsPositionBlock = !this.crudButtonsPositionBlock;
+  }
+  openEditPositionBlock() {
+    this.editPositionBlock = !this.editPositionBlock;
+  }
+  editPosition(id: number) {
+    console.log('editPosition', id);
+
+    console.log(this.userObject);
+    console.warn(this.userObject[0]); // родительский раздел
+    console.log(this.userObject[0].sections); // секции родительского раздела
+    console.log(this.userObject[0].sections[0]);  // секция
+    console.log(this.userObject[0].sections[0].items); // сюда splice
+
+
+    console.log(this.currentSectionId);
+
+    // todo вытащить при expandMenu parent id
+    console.log(this.currentSectionParentId);    
+    const index = this.userObject.findIndex(x => x.id === Number(this.currentSectionParentId));
+    console.log(this.userObject[this.currentSectionParentId]);
+    console.warn(this.userObject[index]);
+
+
+
   }
 
 }

@@ -13,6 +13,7 @@ export interface SubSection {
 }
 export interface Position {
     id: number;
+    sectionId: number;
     name: string;
     sale: number
 }

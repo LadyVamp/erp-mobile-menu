@@ -110,7 +110,8 @@
          </div>
          
          <ul *ngFor="let section of collection.sections; let i = index;">
-            <li *ngIf="collection.expanded" (click)="expandMenuSubSection(collection.sections[i]); section.expanded = !section.expanded"
+            <li *ngIf="collection.expanded"
+               (click)="expandMenuSubSection(collection.sections[i]); section.expanded = !section.expanded"
                class="list-item flex ml-4 font-semibold">
                <div class="w-5 h-5">
                   <svg *ngIf="section.expanded" viewBox="0 0 30 29">
@@ -200,7 +201,7 @@
    
    <section *ngIf="editPositionBlock" class="section-crud">
       <div class="flex justify-between">
-         <h1 class="font-bold text-lg">Редактировать позицию</h1>
+         <h1 class="font-bold text-lg">Редактировать позицию <span class="text-gray-500">{{currentPositionId}}</span></h1>
          <button class="text-center font-semibold text-blue-600 rounded-md focus:outline-none" (click)="openEditPositionBlock()">
             Отмена
          </button>
@@ -212,8 +213,8 @@
       </div>
       <label>Цена</label>
       <div class="leading-normal border rounded-md">
-         <input [(ngModel)]="currentPositionSale" type="text" class="px-4 py-3 w-full focus:outline-none"
-            (keyup.enter)="editPosition(currentPositionId)" placeholder="0">
+         <input [(ngModel)]="currentPositionSale" type="number" min="0" class="px-4 py-3 w-full focus:outline-none"
+            (keyup.enter)="editPosition(currentPositionId)" placeholder="0 &#8381;">
       </div>
       <button class="text-center p-2 bg-blue-600 text-white font-semibold w-full my-2 rounded-md mt-auto"
          (click)="editPosition(currentPositionId)">

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { MenuService } from './services/menu.service';
 import { StorageService } from './services/storage.service';
-import { Section, Position,SubSection } from './interfaces';
+import { Section, SubSection, Position } from './interfaces';
+import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,6 +21,7 @@ export class AppComponent {
   currentSectionName = '';
 
   currentPositionId = 0;
+  currentPositionSectionId = 0;
   currentPositionName = '';
   currentPositionSale = 0;
   crudButtonsPositionBlock = false;
@@ -214,6 +216,7 @@ export class AppComponent {
   getPositionInfo(value: Position) {
     console.log(value);
     this.currentPositionId = value.id
+    this.currentPositionSectionId = value.sectionId
     this.currentPositionName = value.name
     this.currentPositionSale = value.sale
 
@@ -225,26 +228,57 @@ export class AppComponent {
   }
   openEditPositionBlock() {
     this.editPositionBlock = !this.editPositionBlock;
+    this.crudButtonsPositionBlock = false;
   }
+
   editPosition(id: number) {
-    console.log('editPosition', id);
-
+    console.log('editPosition', id)
     console.log(this.userObject);
-    console.warn(this.userObject[0]); // родительский раздел
-    console.log(this.userObject[0].sections); // секции родительского раздела
-    console.log(this.userObject[0].sections[0]);  // секция
-    console.log(this.userObject[0].sections[0].items); // сюда splice
 
+    try {
+      // console.log(this.currentPositionId, this.currentPositionSectionId, this.currentPositionName, this.currentPositionSale);
+      /*
+        todo
+          сейчас currentSectionParentId заполняется из expandMenuSubSection.
+          но если подраздел не был раскрыт, то индексы == -1
+          надо заполнить currentSectionParentId не из expandMenuSubSection
+      */
 
-    console.log(this.currentSectionId);
+      console.log('currentSectionParentId', this.currentSectionParentId);
+      console.log('currentPositionSectionId', this.currentPositionSectionId);
 
-    // todo вытащить при expandMenu parent id
-    console.log(this.currentSectionParentId);    
-    const index = this.userObject.findIndex(x => x.id === Number(this.currentSectionParentId));
-    console.log(this.userObject[this.currentSectionParentId]);
-    console.warn(this.userObject[index]);
+      for (let i = 0; i < this.userObject[i].sections.length; i++) {
+        let section = this.userObject[i].sections.find(x => x.id === this.currentPositionSectionId)
+        this.currentSectionParentId = Number(section?.parentId)
+        console.log('currentSectionParentId', this.currentSectionParentId);
+      }
 
+      // todo теперь index3 == -1 :(
 
+      // индекс раздела
+      const index1 = this.userObject.findIndex(x => x.id === this.currentSectionParentId);
+      console.warn('index1', index1);
+
+      // индекс подраздела
+      const index2 = this.userObject[index1].sections.findIndex(x => x.id === Number(this.currentPositionSectionId));
+      console.warn('index2', index2);
+      console.log('раздел', this.userObject[index1]);
+      console.log('подразделы раздела', this.userObject[index1].sections);
+      console.log('подраздел', this.userObject[index1].sections[index2]);
+      console.log('сюда splice', this.userObject[index1].sections[index2].items);
+
+      // индекс изменяемой позиции
+      const index3 = this.userObject[index1].sections[index2].items.findIndex(x => x.id === Number(this.currentPositionSectionId))
+      console.warn('index3', index3);
+
+      this.userObject[index1].sections[index2].items.splice(index3, 1,
+        { id: this.currentPositionId, sectionId: this.currentPositionSectionId, name: this.currentPositionName, sale: this.currentPositionSale })
+
+      this.fillStorage(this.userObject);
+      this.openEditPositionBlock();
+    } catch (e) {
+      console.error(e)
+    }
 
   }
 

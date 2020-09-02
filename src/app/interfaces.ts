@@ -2,7 +2,7 @@ export interface Section {
     name: string;
     id: number;
     expanded: boolean;
-    sections?: Array<SubSection>
+    sections?: Array<SubSection>;
 }
 export interface SubSection {
     id: number;
@@ -15,5 +15,5 @@ export interface Position {
     id: number;
     sectionId: number;
     name: string;
-    sale: number
+    sale: number;
 }

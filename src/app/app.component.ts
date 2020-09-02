@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { MenuService } from './services/menu.service';
 import { StorageService } from './services/storage.service';
 import { Section, SubSection, Position } from './interfaces';
-import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -28,6 +27,8 @@ export class AppComponent {
   editPositionBlock = false;
   currentSectionParentId = 0;
 
+  testPlaceholder = 'Раздел';
+
   userObject = [{
     name: 'Холодные Напитки',
     id: 1,
@@ -48,7 +49,7 @@ export class AppComponent {
         ],
       }
     ]
-  }]
+  }];
 
   isEmptyStorage = false;
   isErrorGetData = false;
@@ -60,7 +61,7 @@ export class AppComponent {
     public storageService: StorageService
   ) {
     this.storageService.watchStorage().subscribe((data: string) => {
-      console.log(data);
+      console.info(data);
       this.crudButtonsBlock = false;
       this.crudButtonsPositionBlock = false;
 
@@ -135,6 +136,7 @@ export class AppComponent {
   openNewSectionBlock() {
     this.newSectionBlock = !this.newSectionBlock;
     this.selectedParentId = 0;
+    this.testPlaceholder = 'Раздел';
   }
   openEditSectionBlock() {
     this.editSectionBlock = !this.editSectionBlock;
@@ -179,14 +181,14 @@ export class AppComponent {
       if (parent == 0) { // по умолчанию первый уровень
         console.log(parent);
         this.userObject.push({ name: newSection, id: Math.floor(Math.random() * 100), expanded: false, sections: [] });
-      } else if (parent !== 0) { // выбран родительский раздел    
+      } else if (parent !== 0) { // выбран родительский раздел
         const index = this.userObject.findIndex(x => x.id === Number(parent));
-        const sectionId = Math.floor(Math.random() * 100)
+        const sectionId = Math.floor(Math.random() * 100);
         const testPositions = [
-          { id: Math.floor(Math.random() * 100), sectionId: sectionId, name: 'Морс клюквенный', sale: 100 },
-          { id: Math.floor(Math.random() * 100), sectionId: sectionId, name: 'Морс облепиховый', sale: 200 },
-        ]
-        this.userObject[index].sections.push({ id: sectionId, parentId: Number(parent), name: newSection, expanded: false, items: testPositions })
+          { id: Math.floor(Math.random() * 1000), sectionId, name: 'Морс клюквенный', sale: 100 },
+          { id: Math.floor(Math.random() * 1000), sectionId, name: 'Морс облепиховый', sale: 200 },
+        ];
+        this.userObject[index].sections.push({ id: sectionId, parentId: Number(parent), name: newSection, expanded: false, items: testPositions });
       }
       this.fillStorage(this.userObject);
       this.openNewSectionBlock();
@@ -209,18 +211,30 @@ export class AppComponent {
   }
 
   onChange(event: any) {
-    this.selectedParentId = event.target.value
+    this.selectedParentId = Number(event.target.value);
     console.log(this.selectedParentId);
+    this.fillPlaceholder(this.selectedParentId);
+  }
+
+  fillPlaceholder(id: number) {
+    const index = this.userObject.findIndex(x => x.id === id);
+    const amount = this.userObject[index].sections.length;
+
+    if (this.selectedParentId === 0) {
+      this.testPlaceholder = 'Раздел';
+    } else {
+      this.testPlaceholder = 'подраздел' + index + amount;
+    }
   }
 
   getPositionInfo(value: Position) {
     console.log(value);
-    this.currentPositionId = value.id
-    this.currentPositionSectionId = value.sectionId
-    this.currentPositionName = value.name
-    this.currentPositionSale = value.sale
+    this.currentPositionId = value.id;
+    this.currentPositionSectionId = value.sectionId;
+    this.currentPositionName = value.name;
+    this.currentPositionSale = value.sale;
 
-    console.log(this.currentPositionId)
+    console.log(this.currentPositionId);
   }
 
   openCrudButtonsPositionBlock() {
@@ -232,24 +246,16 @@ export class AppComponent {
   }
 
   editPosition(id: number) {
-    console.log('editPosition', id)
-    console.log(this.userObject);
+    // console.log('editPosition', id)
+    // console.log(this.userObject);
 
     try {
-      // console.log(this.currentPositionId, this.currentPositionSectionId, this.currentPositionName, this.currentPositionSale);
-      /*
-        todo
-          сейчас currentSectionParentId заполняется из expandMenuSubSection.
-          но если подраздел не был раскрыт, то индексы == -1
-          надо заполнить currentSectionParentId не из expandMenuSubSection
-      */
-
       console.log('currentSectionParentId', this.currentSectionParentId);
       console.log('currentPositionSectionId', this.currentPositionSectionId);
 
       for (let i = 0; i < this.userObject[i].sections.length; i++) {
-        let section = this.userObject[i].sections.find(x => x.id === this.currentPositionSectionId)
-        this.currentSectionParentId = Number(section?.parentId)
+        const section = this.userObject[i].sections.find(x => x.id === this.currentPositionSectionId);
+        this.currentSectionParentId = Number(section?.parentId);
         console.log('currentSectionParentId', this.currentSectionParentId);
       }
 
@@ -267,17 +273,18 @@ export class AppComponent {
       console.log('подраздел', this.userObject[index1].sections[index2]);
       console.log('сюда splice', this.userObject[index1].sections[index2].items);
 
-      // индекс изменяемой позиции
-      const index3 = this.userObject[index1].sections[index2].items.findIndex(x => x.id === Number(this.currentPositionSectionId))
+      // индекс изменяемой позиции     
+      const index3 = this.userObject[index1].sections[index2].items.findIndex(x => x.id === Number(this.currentPositionSectionId));
+      console.log(this.userObject[index1].sections[index2].items);
       console.warn('index3', index3);
 
       this.userObject[index1].sections[index2].items.splice(index3, 1,
-        { id: this.currentPositionId, sectionId: this.currentPositionSectionId, name: this.currentPositionName, sale: this.currentPositionSale })
+        { id: this.currentPositionId, sectionId: this.currentPositionSectionId, name: this.currentPositionName, sale: this.currentPositionSale });
 
       this.fillStorage(this.userObject);
       this.openEditPositionBlock();
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
 
   }

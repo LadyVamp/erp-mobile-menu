@@ -40,7 +40,7 @@
       <label>Название</label>
       <div class="leading-normal border rounded-md">
          <input (keyup.enter)="addSection(newSection.value, selectedParentId)" type="text"
-            class="px-4 py-3 w-full focus:outline-none" placeholder="Введите название категории" #newSection>
+            class="px-4 py-3 w-full focus:outline-none" placeholder="Введите название категории" #newSection value="{{testPlaceholder}}">
       </div>
       <label>Раздел</label>
       <select (change)="onChange($event)"
